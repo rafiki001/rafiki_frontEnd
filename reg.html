@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 24px;
+    color: #1f2937;
+  }
+  .container {
+    max-width: 1024px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-icon {
+    width: 44px;
+    height: 44px;
+    background: #2563eb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .header-title h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    color: #111827;
+  }
+  .header-title p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+  }
+  .instructions {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #1e3a8a;
+    max-width: 280px;
+  }
+  .instructions strong {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+    color: #1d4ed8;
+  }
+  .section {
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .section-header .icon { font-size: 16px; }
+  .section-demographic { background: #eff6ff; color: #1d4ed8; }
+  .section-marital { background: #f0fdf4; color: #15803d; }
+  .section-education { background: #fffbeb; color: #b45309; }
+  .section-work { background: #f5f3ff; color: #6d28d9; }
+  .section-additional { background: #eff6ff; color: #1d4ed8; }
+
+  .section-body {
+    padding: 20px 28px 26px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 20px;
+  }
+  .section-body.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .field { display: flex; flex-direction: column; }
+  .field.span-2 { grid-column: span 2; }
+  .field.span-3 { grid-column: span 3; }
+  .field.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+  }
+  label .req { color: #dc2626; margin-left: 2px; }
+
+  .input-icon {
+    position: relative;
+  }
+  .input-icon span.pre {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 14px;
+    pointer-events: none;
+  }
+  .input-icon input {
+    padding-left: 32px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  select,
+  textarea {
+    padding: 9px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #111827;
+    background: #fff;
+    width: 100%;
+    font-family: inherit;
+  }
+  input::placeholder, textarea::placeholder { color: #9ca3af; }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  }
+
+  .radio-group, .checkbox-group {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 6px;
+  }
+  .radio-group label, .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 0;
+    color: #1f2937;
+    cursor: pointer;
+  }
+  .radio-group input, .checkbox-group input {
+    width: 15px;
+    height: 15px;
+    accent-color: #2563eb;
+    cursor: pointer;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .file-btn {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .file-name { font-size: 13px; color: #6b7280; }
+  .hint { font-size: 11.5px; color: #9ca3af; margin-top: 4px; }
+
+  .duration-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .duration-row .dfield { display: flex; flex-direction: column; }
+  .duration-row .to-label { font-weight: 600; font-size: 13px; padding-top: 18px; }
+  .inline-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    padding-top: 18px;
+    color: #374151;
+  }
+
+  .editor-toolbar {
+    display: flex;
+    gap: 4px;
+    border: 1px solid #d1d5db;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    background: #f9fafb;
+    padding: 6px 8px;
+  }
+  .editor-toolbar button {
+    border: none;
+    background: transparent;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #4b5563;
+  }
+  .editor-toolbar button:hover { background: #e5e7eb; }
+  .editor-body {
+    border: 1px solid #d1d5db;
+    border-radius: 0 0 6px 6px;
+    padding: 10px 12px;
+    min-height: 90px;
+    font-size: 14px;
+    color: #9ca3af;
+  }
+  .char-count {
+    text-align: right;
+    font-size: 11.5px;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+
+  textarea { resize: vertical; min-height: 70px; }
+
+  .footer {
+    padding: 20px 28px 28px;
+  }
+  .agree-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #374151;
+    margin-bottom: 18px;
+  }
+  .agree-row a { color: #2563eb; text-decoration: none; }
+  .agree-row a:hover { text-decoration: underline; }
+  .agree-row .req { color: #dc2626; }
+
+  .btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 11px 22px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary { background: #2563eb; color: #fff; }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-secondary { background: #6b7280; color: #fff; }
+  .btn-secondary:hover { background: #4b5563; }
+  .btn-success { background: #16a34a; color: #fff; }
+  .btn-success:hover { background: #15803d; }
+
+  @media (max-width: 900px) {
+    .section-body { grid-template-columns: repeat(2, 1fr); }
+    .field.span-3 { grid-column: span 2; }
+  }
+  @media (max-width: 600px) {
+    .section-body { grid-template-columns: 1fr; }
+    .field.span-2, .field.span-3 { grid-column: span 1; }
+    .header { flex-direction: column; }
+    .instructions { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-title">
+      <div class="header-icon">&#128203;</div>
+      <div>
+        <h1>Registration Form</h1>
+        <p>Please fill in all required information accurately.</p>
+      </div>
+    </div>
+    <div class="instructions">
+      <strong>&#8505;&#65039; Instructions</strong>
+      Fields marked with * are required.
+    </div>
+  </div>
+
+  <form>
+
+    <!-- Section 1: Demographic Information -->
+    <div class="section">
+      <div class="section-header section-demographic"><span class="icon">&#128100;</span> 1. Demographic Information</div>
+      <div class="section-body">
+        <div class="field">
+          <label>Full Name<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#128100;</span>
+            <input type="text" placeholder="Enter your full name" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Date of Birth<span class="req">*</span></label>
+          <input type="date" required>
+        </div>
+        <div class="field">
+          <label>Gender<span class="req">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="gender"> Male</label>
+            <label><input type="radio" name="gender"> Female</label>
+            <label><input type="radio" name="gender"> Non-binary</label>
+            <label><input type="radio" name="gender"> Prefer not to say</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Email Address<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#9993;&#65039;</span>
+            <input type="email" placeholder="example@email.com" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Phone Number<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#128222;</span>
+            <input type="tel" placeholder="e.g. +250 788 123 456" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Residential Address<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#127968;</span>
+            <input type="text" placeholder="Enter your full residential address" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Nationality</label>
+          <select>
+            <option>-- Select your nationality --</option>
+            <option>Rwandan</option>
+            <option>Kenyan</option>
+            <option>Ugandan</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>City</label>
+          <input type="text" placeholder="Enter your city">
+        </div>
+        <div class="field">
+          <label>Postal Code</label>
+          <input type="text" placeholder="Enter postal code">
+        </div>
+
+        <div class="field full" style="grid-column: span 1;">
+          <label>Upload Passport Photo</label>
+          <div class="file-row">
+            <button type="button" class="file-btn">Choose File</button>
+            <span class="file-name">No file chosen</span>
+          </div>
+          <div class="hint">JPG, PNG or GIF (Max 2MB)</div>
+        </div>
+
+        <div class="field span-2">
+          <label>Preferred Contact Method<span class="req">*</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox"> Email</label>
+            <label><input type="checkbox"> Phone</label>
+            <label><input type="checkbox"> SMS</label>
+            <label><input type="checkbox"> WhatsApp</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Preferred Language</label>
+          <select>
+            <option>-- Select Language --</option>
+            <option>English</option>
+            <option>French</option>
+            <option>Kinyarwanda</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Marital Status -->
+    <div class="section">
+      <div class="section-header section-marital"><span class="icon">&#10084;&#65039;</span> 2. Marital Status</div>
+      <div class="section-body cols-2">
+        <div class="field">
+          <label>Current Marital Status<span class="req">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="marital"> Single</label>
+            <label><input type="radio" name="marital"> Married</label>
+            <label><input type="radio" name="marital"> Divorced</label>
+            <label><input type="radio" name="marital"> Widowed</label>
+            <label><input type="radio" name="marital"> Separated</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Date of Marriage / Separation (if applicable)</label>
+          <input type="date">
+        </div>
+
+        <div class="field">
+          <label>Spouse Full Name (if applicable)</label>
+          <div class="input-icon">
+            <span class="pre">&#128100;</span>
+            <input type="text" placeholder="Enter spouse full name">
+          </div>
+        </div>
+        <div class="field">
+          <label>Number of Dependents</label>
+          <select>
+            <option>-- Select number --</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3+</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Educational Background -->
+    <div class="section">
+      <div class="section-header section-education"><span class="icon">&#127891;</span> 3. Educational Background</div>
+      <div class="section-body cols-2">
+        <div class="field">
+          <label>Highest Level of Education Attained<span class="req">*</span></label>
+          <div class="radio-group" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div style="display:flex; gap:18px; flex-wrap:wrap;">
+              <label><input type="radio" name="education"> High School Diploma / GED</label>
+              <label><input type="radio" name="education"> Associate's Degree</label>
+              <label><input type="radio" name="education"> Bachelor's Degree</label>
+            </div>
+            <div style="display:flex; gap:18px; flex-wrap:wrap;">
+              <label><input type="radio" name="education"> Master's Degree</label>
+              <label><input type="radio" name="education"> Doctorate (Ph.D., MD, etc.)</label>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Institution Name<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#127963;&#65039;</span>
+            <input type="text" placeholder="Enter institution name" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Field of Study / Major<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#128218;</span>
+            <input type="text" placeholder="Enter field of study or major" required>
+          </div>
+        </div>
+        <div class="field" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div class="field">
+            <label>Graduation Year<span class="req">*</span></label>
+            <div class="input-icon">
+              <span class="pre">&#128197;</span>
+              <input type="number" placeholder="e.g. 2020" required>
+            </div>
+          </div>
+          <div class="field">
+            <label>Grade / GPA (if applicable)</label>
+            <input type="text" placeholder="e.g. 3.75 or First Class">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Upload Certificate / Document (Optional)</label>
+          <div class="file-row">
+            <button type="button" class="file-btn">Choose File</button>
+            <span class="file-name">No file chosen</span>
+          </div>
+          <div class="hint">PDF, JPG or PNG (Max 5MB)</div>
+        </div>
+        <div class="field">
+          <label>Additional Courses / Certifications (if any)</label>
+          <textarea placeholder="List additional courses or certifications"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Work Experience -->
+    <div class="section">
+      <div class="section-header section-work"><span class="icon">&#128188;</span> 4. Work Experience</div>
+      <div class="section-body cols-2">
+        <div class="field">
+          <label>Current / Most Recent Job Title<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#128188;</span>
+            <input type="text" placeholder="Enter your job title" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Company / Organization Name<span class="req">*</span></label>
+          <div class="input-icon">
+            <span class="pre">&#127970;</span>
+            <input type="text" placeholder="Enter company or organization name" required>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label>Employment Duration<span class="req">*</span></label>
+          <div class="duration-row">
+            <div class="dfield">
+              <label style="font-weight:500;">From</label>
+              <input type="date">
+            </div>
+            <span class="to-label">To</span>
+            <div class="dfield">
+              <label style="font-weight:500;">&nbsp;</label>
+              <input type="date">
+            </div>
+            <label class="inline-check"><input type="checkbox"> I currently work here</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Key Responsibilities<span class="req">*</span></label>
+          <div class="editor-toolbar">
+            <button type="button"><b>B</b></button>
+            <button type="button"><i>I</i></button>
+            <button type="button"><u>U</u></button>
+            <button type="button">&#8801;</button>
+            <button type="button">&#8226;</button>
+            <button type="button">&#128279;</button>
+          </div>
+          <div class="editor-body" contenteditable="true" data-placeholder="Describe your key responsibilities...">Describe your key responsibilities...</div>
+          <div class="char-count">0 / 1000 characters</div>
+        </div>
+
+        <div class="field" style="display:flex; flex-direction:column; gap:18px;">
+          <div class="field">
+            <label>Employment Type</label>
+            <select>
+              <option>-- Select type --</option>
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Contract</option>
+              <option>Internship</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Industry</label>
+            <select>
+              <option>-- Select industry --</option>
+              <option>Technology</option>
+              <option>Healthcare</option>
+              <option>Finance</option>
+              <option>Education</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="section">
+      <div class="section-header section-additional"><span class="icon">&#11088;</span> Additional Information (Optional)</div>
+      <div class="section-body">
+        <div class="field">
+          <label>How did you hear about us?</label>
+          <select>
+            <option>-- Select an option --</option>
+            <option>Social Media</option>
+            <option>Friend/Referral</option>
+            <option>Search Engine</option>
+            <option>Advertisement</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>LinkedIn Profile (if any)</label>
+          <div class="input-icon">
+            <span class="pre">&#128279;</span>
+            <input type="text" placeholder="https://linkedin.com/in/username">
+          </div>
+        </div>
+        <div class="field">
+          <label>Personal Website (if any)</label>
+          <div class="input-icon">
+            <span class="pre">&#127760;</span>
+            <input type="text" placeholder="https://yourwebsite.com">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="agree-row">
+        <input type="checkbox" required>
+        <span>I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>. <span class="req">*</span></span>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary">&#128190; Submit Registration</button>
+        <button type="reset" class="btn btn-secondary">&#8635; Reset Form</button>
+        <button type="button" class="btn btn-success">&#128190; Save as Draft</button>
+      </div>
+    </div>
+
+  </form>
+</div>
+</body>
+</html>
